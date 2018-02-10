@@ -1,5 +1,6 @@
 (function () {
     const SHORTCUT_REMOVE = 'shortcut_rm_iframes';
+    const MSG_ANIMATE_ICON = 'animate_browser_action_icon';
     const MSG_PERFORM_REMOVING = 'perform_iframe_removing';
     const TAG = 'iframe';
 
@@ -18,8 +19,10 @@
     // to listen event from background script
     browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         if (msg === MSG_PERFORM_REMOVING) {
+            browser.runtime.sendMessage(MSG_ANIMATE_ICON);
             removeDom();
         } else if (msg === SHORTCUT_REMOVE) {
+            browser.runtime.sendMessage(MSG_ANIMATE_ICON);
             removeDom();
         }
     });
