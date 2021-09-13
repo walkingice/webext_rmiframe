@@ -1,2 +1,5 @@
 .DS_Store
 web-ext-artifacts
+
+yarn.lock
+node_modules

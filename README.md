@@ -13,3 +13,10 @@ Usually these advertisements are provided in iframe, this web-extension helps yo
 # Installation
 
 * [Firefox Add-ons: iFrame remover](https://addons.mozilla.org/zh-TW/firefox/addon/iframe-remover/)
+
+# Development
+
+```bash
+$ yarn install
+$ npx web-ext build
+```
