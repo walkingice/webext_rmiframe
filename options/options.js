@@ -1,14 +1,14 @@
 (() => {
+    /* options.js implementation */
+
     const OPTIONS_AUTO_ENABLED = 'enabled_auto_removing_doms';
 
     let checkbox = document.getElementById('checkbox');
-    browser.storage.local.get(OPTIONS_AUTO_ENABLED).then((r) => {
-        checkbox.checked = !!r[OPTIONS_AUTO_ENABLED];
+    BrowserWrapper.getStorage(OPTIONS_AUTO_ENABLED).then((result) => {
+        checkbox.checked = !!result;
     });
 
     checkbox.addEventListener('change', () => {
-        var obj = {};
-        obj[OPTIONS_AUTO_ENABLED] = checkbox.checked;
-        browser.storage.local.set(obj);
+        BrowserWrapper.setStorage(OPTIONS_AUTO_ENABLED, checkbox.checked)
     });
 })();
