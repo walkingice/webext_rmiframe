@@ -7,6 +7,34 @@
         p.desc {
             margin-left: 20px;
         }
+
+        #enable-list-block {
+            min-height: 200px;
+            grid-template-columns: 50%;
+        }
+
+        textarea {
+            margin: 1%;
+            width: 90%;
+            min-height: 200px;
+        }
+
+        .description {
+            padding: 5px;
+        }
+
+        .flex-box {
+            width: 90%;
+            display: flex;
+        }
+
+        .left {
+            width: 50%;
+        }
+
+        .right {
+            width: 50%;
+        }
     </style>
 </head>
 
@@ -16,6 +44,24 @@
         <p class="desc">if enabled, everytime once you visit a page, add-on tries to remove any iframes, and keeps this
             checking for 10 seconds.</p>
     </div>
+
+    <div id="enable-list-block" class="flex-box">
+        <div class="left">
+            <textarea id="enable-list-patterns-input" placeholder="XXXXX"></textarea>
+        </div>
+
+        <div class="right description" style="background-color: #FAFAFA;">
+            <p>
+                Input Javascript pattern to match domains, ie <b>.*foobar\.site.*</b>
+            </p>
+            Your patterns
+            <p id="enable-list-patterns-display"></p>
+
+            </p>
+        </div>
+
+    </div>
+
     <script type="text/javascript" src="./lib.js"></script>
     <script type="text/javascript" src="./options.js"></script>
 </body>
