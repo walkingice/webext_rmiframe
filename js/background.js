@@ -11,7 +11,7 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         console.log('Got event from tab');
 
         // set an endless svg and clear it later, to get animation effect
-        browser.browserAction.setIcon({path: 'imgs/rotate.svg'});
+        browser.browserAction.setIcon({ path: 'imgs/rotate.svg' });
         iconTimeout = setTimeout(() => {
             browser.browserAction.setIcon({});
             if (!!iconTimeout) {
@@ -27,7 +27,7 @@ browser.commands.onCommand.addListener((cmd) => {
     // cannot user tabs.getCurrent() since this script
     // in running in background
     if (cmd === 'shortcut_rm_iframes') {
-        browser.tabs.query({active: true}, (tabs) => {
+        browser.tabs.query({ active: true }, (tabs) => {
             tabs.forEach((tab) => {
                 browser.tabs.sendMessage(tab.id, cmd);
             });

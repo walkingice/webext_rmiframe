@@ -1,8 +1,8 @@
-(function() {
+(function () {
     const MSG_PERFORM_REMOVING = 'perform_iframe_removing';
     const OPTIONS_AUTO_ENABLED = 'enabled_auto_removing_doms';
 
-    function sendRemovingMsg () {
+    function sendRemovingMsg() {
         browser.tabs.query({
             currentWindow: true,
             active: true
@@ -17,7 +17,6 @@
     document.getElementById('button').addEventListener('click', () => {
         sendRemovingMsg();
     });
-
 
     // sync option UI from preference
     let checkbox = document.getElementById('checkbox');

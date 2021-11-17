@@ -9,7 +9,6 @@
     function removeDom() {
         console.log('removing iframe doms!!');
         let index = 0;
-        let doms = document.getElementsByTagName(TAG);
         let element = document.getElementsByTagName(TAG);
         for (index = element.length - 1; index >= 0; index--) {
             element[index].parentNode.removeChild(element[index]);
@@ -37,7 +36,7 @@
             }, 1000);
 
             // stop removing after 10 seconds
-            setTimeout(function() {
+            setTimeout(function () {
                 window.clearInterval(repeater);
             }, 10000);
         }
