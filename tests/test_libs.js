@@ -40,9 +40,14 @@ function createEvent() {
     };
 }
 
-function loadScript(filename, context) {
+function loadScript(filename, context, exportName) {
     const source = fs.readFileSync(filename, 'utf8');
-    vm.runInNewContext(source, context, { filename });
+    const exportStatement = exportName
+        ? `\nthis.__testExport = ${exportName};`
+        : '';
+    vm.runInNewContext(source + exportStatement, context, { filename });
+
+    return context.__testExport;
 }
 
 async function run() {
