@@ -2,68 +2,207 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <title>Remove iFrame Options</title>
     <style>
-        p.desc {
-            margin-left: 20px;
+        :root {
+            color: #1f2933;
+            font-family: system-ui, sans-serif;
         }
 
-        #enable-list-block {
-            min-height: 200px;
-            grid-template-columns: 50%;
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #f6f8fa;
         }
 
-        textarea {
-            margin: 1%;
-            width: 90%;
-            min-height: 200px;
+        main {
+            max-width: 720px;
+            padding: 24px;
+            background: #fff;
+            border: 1px solid #d8dee4;
+            border-radius: 8px;
         }
 
-        .description {
-            padding: 5px;
+        h1 {
+            margin: 0 0 20px;
+            font-size: 20px;
         }
 
-        .flex-box {
-            width: 90%;
+        h2 {
+            margin: 0 0 8px;
+            font-size: 16px;
+        }
+
+        .toggle {
             display: flex;
+            gap: 10px;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 600;
         }
 
-        .left {
-            width: 50%;
+        .summary {
+            margin: 20px 0;
+            padding: 14px;
+            background: #f0f4f8;
+            border-radius: 6px;
         }
 
-        .right {
-            width: 50%;
+        .summary p,
+        .list-description {
+            margin: 0;
+        }
+
+        .list-section {
+            margin: 18px 0;
+            padding: 16px;
+            border: 1px solid #d8dee4;
+            border-radius: 6px;
+        }
+
+        .list-title {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .list-description {
+            margin: 8px 0 12px 24px;
+            color: #52606d;
+        }
+
+        .add-pattern {
+            display: flex;
+            gap: 8px;
+        }
+
+        .add-pattern input {
+            flex: 1;
+        }
+
+        .pattern-list {
+            margin: 12px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .pattern-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            padding: 8px 0;
+            border-top: 1px solid #e5e9ed;
+        }
+
+        .pattern-value {
+            overflow-wrap: anywhere;
+            font-family: ui-monospace, monospace;
+        }
+
+        .empty-list {
+            padding: 8px 0;
+            color: #7b8794;
+        }
+
+        .timing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .number-field {
+            display: grid;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .number-field span {
+            font-size: 13px;
+            font-weight: 400;
+            color: #52606d;
+        }
+
+        input,
+        button {
+            font: inherit;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            box-sizing: border-box;
         }
     </style>
 </head>
 
 <body>
-    <div>
-        <input id="checkbox" type="checkbox">Auto remove</input>
-        <p class="desc">if enabled, everytime once you visit a page, add-on tries to remove any iframes, and keeps this
-            checking for 10 seconds.</p>
-    </div>
+    <main>
+        <h1>Options</h1>
 
-    <div id="enable-list-block" class="flex-box">
-        <div class="left">
-            <textarea id="enable-list-patterns-input" placeholder="XXXXX"></textarea>
-        </div>
+        <label class="toggle">
+            <input id="auto-remove-checkbox" type="checkbox" disabled>
+            Auto Remove
+        </label>
 
-        <div class="right description" style="background-color: #FAFAFA;">
-            <p>
-                Input Javascript pattern to match domains, ie <b>.*foobar\.site.*</b>
-            </p>
-            Your patterns
-            <p id="enable-list-patterns-display"></p>
+        <section class="summary" aria-live="polite">
+            <h2>Summary</h2>
+            <p id="summary-text">Auto Remove is off.</p>
+        </section>
 
-            </p>
-        </div>
+        <section id="auto-remove-settings">
+            <section class="list-section">
+                <label class="list-title">
+                    <input id="apply-list-radio" name="list-mode" type="radio" value="apply" disabled>
+                    Apply List
+                </label>
+                <p class="list-description">Remove only on matching URLs.</p>
+                <div class="add-pattern">
+                    <input id="apply-list-input" type="text" placeholder="Example: .*example\.com.*" disabled>
+                    <button id="apply-list-add" type="button" disabled>Add</button>
+                </div>
+                <ul id="apply-list-display" class="pattern-list"></ul>
+            </section>
 
-    </div>
+            <section class="list-section">
+                <label class="list-title">
+                    <input id="ignore-list-radio" name="list-mode" type="radio" value="ignore" disabled>
+                    Ignore List
+                </label>
+                <p class="list-description">Remove except on matching URLs.</p>
+                <div class="add-pattern">
+                    <input id="ignore-list-input" type="text" placeholder="Example: .*example\.com.*" disabled>
+                    <button id="ignore-list-add" type="button" disabled>Add</button>
+                </div>
+                <ul id="ignore-list-display" class="pattern-list"></ul>
+            </section>
 
-    <script type="text/javascript" src="./lib.js"></script>
-    <script type="text/javascript" src="./options.js"></script>
+            <section>
+                <h2>Timing</h2>
+                <div class="timing-grid">
+                    <label class="number-field">
+                        Delay
+                        <input id="delay-input" type="number" min="0" step="1" disabled>
+                        <span>seconds</span>
+                    </label>
+                    <label class="number-field">
+                        Repeat
+                        <input id="repeat-input" type="number" min="1" step="1" disabled>
+                        <span>times</span>
+                    </label>
+                    <label class="number-field">
+                        Period
+                        <input id="period-input" type="number" min="0" step="1" disabled>
+                        <span>seconds</span>
+                    </label>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="./lib.js"></script>
+    <script src="./options.js"></script>
 </body>
 
 </html>
