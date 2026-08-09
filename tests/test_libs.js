@@ -1,4 +1,6 @@
 const tests = [];
+const fs = require('fs');
+const vm = require('vm');
 
 function test(name, callback) {
     tests.push({ name, callback });
@@ -14,6 +16,33 @@ function assertEqual(actual, expected, message) {
     if (actual !== expected) {
         throw new Error(message || `Expected ${expected}, got ${actual}.`);
     }
+}
+
+function assertDeepEqual(actual, expected, message) {
+    const actualJson = JSON.stringify(actual);
+    const expectedJson = JSON.stringify(expected);
+
+    if (actualJson !== expectedJson) {
+        throw new Error(message || `Expected ${expectedJson}, got ${actualJson}.`);
+    }
+}
+
+function createEvent() {
+    const listeners = [];
+
+    return {
+        addListener(listener) {
+            listeners.push(listener);
+        },
+        trigger(...args) {
+            listeners.forEach((listener) => listener(...args));
+        }
+    };
+}
+
+function loadScript(filename, context) {
+    const source = fs.readFileSync(filename, 'utf8');
+    vm.runInNewContext(source, context, { filename });
 }
 
 async function run() {
@@ -36,8 +65,11 @@ async function run() {
 }
 
 module.exports = {
+    assertDeepEqual,
     assertEqual,
     assertTrue,
+    createEvent,
+    loadScript,
     run,
     test
 };
