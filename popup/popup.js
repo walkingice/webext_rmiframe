@@ -18,6 +18,10 @@
         sendRemovingMsg();
     });
 
+    document.getElementById('options-button').addEventListener('click', () => {
+        browser.runtime.openOptionsPage();
+    });
+
     // sync option UI from preference
     let checkbox = document.getElementById('checkbox');
     BrowserWrapper.getStorage(OPTIONS_AUTO_ENABLED)

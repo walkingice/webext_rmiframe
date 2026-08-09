@@ -25,6 +25,8 @@ function createElement() {
 function createContext(autoRemoving) {
     const button = createElement();
     const checkbox = createElement();
+    const optionsButton = createElement();
+    let optionsPageOpened = 0;
     const sentMessages = [];
     const storedValues = [];
 
@@ -36,6 +38,11 @@ function createContext(autoRemoving) {
             }
         },
         browser: {
+            runtime: {
+                openOptionsPage() {
+                    optionsPageOpened += 1;
+                }
+            },
             tabs: {
                 query: () => Promise.resolve([{ id: 11 }]),
                 sendMessage(tabId, message) {
@@ -45,11 +52,21 @@ function createContext(autoRemoving) {
         },
         document: {
             getElementById(id) {
-                return id === 'button' ? button : checkbox;
+                if (id === 'button') {
+                    return button;
+                }
+
+                if (id === 'options-button') {
+                    return optionsButton;
+                }
+
+                return checkbox;
             }
         },
         button,
         checkbox,
+        optionsButton,
+        getOptionsPageOpened: () => optionsPageOpened,
         sentMessages,
         storedValues
     };
@@ -72,6 +89,15 @@ test('popup sends removal message when button is clicked', async () => {
     await Promise.resolve();
 
     assertDeepEqual(context.sentMessages, [[11, 'perform_iframe_removing']]);
+});
+
+test('popup opens the options page when gear button is clicked', () => {
+    const context = createContext(false);
+
+    loadScript(popupScript, context);
+    context.optionsButton.trigger('click');
+
+    assertEqual(context.getOptionsPageOpened(), 1);
 });
 
 test('popup stores and applies enabled auto-remove setting', async () => {
