@@ -12,14 +12,18 @@ function createContext() {
     const clickedEvent = createEvent();
     const commandEvent = createEvent();
     const messageEvent = createEvent();
+    const iconPaths = [];
     const queries = [];
     const sentMessages = [];
+    const timeouts = [];
 
     return {
         browser: {
             browserAction: {
                 onClicked: clickedEvent,
-                setIcon() {}
+                setIcon(icon) {
+                    iconPaths.push(icon);
+                }
             },
             commands: { onCommand: commandEvent },
             runtime: { onMessage: messageEvent },
@@ -34,12 +38,18 @@ function createContext() {
             }
         },
         console: { log() {} },
-        setTimeout() {},
+        setTimeout(callback) {
+            timeouts.push(callback);
+            return timeouts.length;
+        },
         window: { clearTimeout() {} },
         clickedEvent,
         commandEvent,
+        iconPaths,
+        messageEvent,
         queries,
-        sentMessages
+        sentMessages,
+        timeouts
     };
 }
 
@@ -62,5 +72,18 @@ test('background sends shortcut to every active tab', () => {
     assertDeepEqual(context.sentMessages, [
         [7, 'shortcut_rm_iframes'],
         [9, 'shortcut_rm_iframes']
+    ]);
+});
+
+test('background restores icon after animation timeout', () => {
+    const context = createContext();
+
+    loadScript(backgroundScript, context);
+    context.messageEvent.trigger('animate_browser_action_icon');
+    context.timeouts[0]();
+
+    assertDeepEqual(context.iconPaths, [
+        { path: 'imgs/rotate.svg' },
+        {}
     ]);
 });

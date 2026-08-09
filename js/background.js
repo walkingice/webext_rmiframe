@@ -15,7 +15,7 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         iconTimeout = setTimeout(() => {
             browser.browserAction.setIcon({});
             if (!!iconTimeout) {
-                window.clearTimeout(timeout);
+                window.clearTimeout(iconTimeout);
                 iconTimeout = null;
             }
         }, 1000);
@@ -34,4 +34,3 @@ browser.commands.onCommand.addListener((cmd) => {
         });
     }
 });
-
