@@ -16,6 +16,7 @@
     // send remove-iframe message when onClick
     document.getElementById('button').addEventListener('click', () => {
         sendRemovingMsg();
+        window.close();
     });
 
     document.getElementById('options-button').addEventListener('click', () => {
