@@ -7,9 +7,18 @@ const pagePath = path.join(
     'test_pages',
     'keep_inserting_iframes.html'
 );
+const scriptPath = path.join(
+    __dirname,
+    'test_pages',
+    'keep_inserting_iframes.js'
+);
 
 function loadPage() {
     return fs.readFileSync(pagePath, 'utf8');
+}
+
+function loadScript() {
+    return fs.readFileSync(scriptPath, 'utf8');
 }
 
 test('iframe test page includes the required controls', () => {
@@ -19,16 +28,17 @@ test('iframe test page includes the required controls', () => {
     assertTrue(page.includes('id="iframes"'));
     assertTrue(page.includes('id="insert-iframe"'));
     assertTrue(page.includes('>insert iframe</button>'));
+    assertTrue(page.includes('<script src="keep_inserting_iframes.js"></script>'));
     assertTrue(
         page.indexOf('id="insert-iframe"') < page.indexOf('id="iframes"')
     );
 });
 
 test('iframe test page restores five frames every three seconds', () => {
-    const page = loadPage();
+    const script = loadScript();
 
-    assertTrue(page.includes('const colors = ['));
-    assertTrue(page.includes('while (iframeContainer.querySelectorAll(\'iframe\').length < 5)'));
-    assertTrue(page.includes('setInterval(ensureFiveIframes, 3000)'));
-    assertTrue(page.includes("insertButton.addEventListener('click', createIframe)"));
+    assertTrue(script.includes('const colors = ['));
+    assertTrue(script.includes('while (iframeContainer.querySelectorAll(\'iframe\').length < 5)'));
+    assertTrue(script.includes('setInterval(ensureFiveIframes, 3000)'));
+    assertTrue(script.includes("insertButton.addEventListener('click', createIframe)"));
 });
