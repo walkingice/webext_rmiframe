@@ -2,7 +2,10 @@
     "manifest_version": 2,
     "browser_specific_settings": {
         "gecko": {
-            "id": "walkingice@web_extension_remove_iframe"
+            "id": "walkingice@web_extension_remove_iframe",
+            "data_collection_permissions": {
+                "required": ["none"]
+            }
         }
     },
     "name": "iFrame remover",

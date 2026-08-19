@@ -15,3 +15,13 @@ test('manifest uses browser-specific settings for Firefox', () => {
     assertTrue(Object.hasOwn(manifest, 'browser_specific_settings'));
     assertTrue(Object.hasOwn(manifest.browser_specific_settings, 'gecko'));
 });
+
+test('manifest declares that Firefox data collection is disabled', () => {
+    const manifest = loadManifest();
+    const permissions = manifest.browser_specific_settings.gecko
+        .data_collection_permissions;
+
+    assertTrue(Object.hasOwn(permissions, 'required'));
+    assertTrue(permissions.required.length === 1);
+    assertTrue(permissions.required[0] === 'none');
+});
