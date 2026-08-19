@@ -1,10 +1,15 @@
-.PHONY: all test clean
+.PHONY: all build test clean help
 
-all:
+all:help
+
+build: ## build the zip file for installation
 	npx web-ext build --overwrite-dest
 
-test:
+test: ## run test
 	node tests/run_tests.js
 
-clean:
+clean: ## remove built files
 	rm -rf web-ext-artifacts/
+
+help:
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
